@@ -24,17 +24,12 @@ message(STATUS "Install prefix: ${CMAKE_INSTALL_PREFIX}")
 
 mark_as_advanced(VERSION_MAJOR VERSION_MINOR VERSION_PATCH)
 
-#pybind11
-if (PYBIND11_DIR)
-    set(PYBIND11_ROOT_DIR ${PYBIND11_DIR})
-    message(STATUS "Use pybind11: ${PYBIND11_ROOT_DIR}")
-else()
-    set(PYBIND11_ROOT_DIR $ENV{PYBIND11_DIR})
-    message(STATUS "Use system pybind11: ${PYBIND11_ROOT_DIR}")
-endif()
+# Find pybind11
+find_package(pybind11 REQUIRED )
+include_directories(${PYBIND11_INCLUDE_DIRS})
+link_libraries(${PYBIND11_LIBS})
 unset(PYBIND11_DIR CACHE)
-
-add_subdirectory(${PYBIND11_ROOT_DIR} "./pybind11")
+set(PYBIND11_CPP_STANDARD -std=c++14)
 
 # Python
 find_package(PythonLibs REQUIRED)
